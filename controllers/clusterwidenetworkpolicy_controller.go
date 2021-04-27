@@ -22,6 +22,7 @@ import (
 
 	"github.com/go-logr/logr"
 	firewallv1 "github.com/metal-stack/firewall-controller/api/v1"
+	"github.com/metal-stack/firewall-controller/pkg/dns"
 	"github.com/metal-stack/firewall-controller/pkg/nftables"
 	v1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -37,6 +38,7 @@ type ClusterwideNetworkPolicyReconciler struct {
 	client.Client
 	Log      logr.Logger
 	Scheme   *runtime.Scheme
+	Cache    *dns.DNSCache
 	recorder record.EventRecorder
 }
 
