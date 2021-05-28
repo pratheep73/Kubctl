@@ -57,6 +57,7 @@ type FirewallReconciler struct {
 	Log                  logr.Logger
 	Scheme               *runtime.Scheme
 	EnableIDS            bool
+	EnableDNSProxy       bool
 	EnableSignatureCheck bool
 	CAPubKey             *rsa.PublicKey
 	DNSProxy             DNSProxy
@@ -128,7 +129,7 @@ func (r *FirewallReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 
 	var errors *multierror.Error
 	log.Info("reconciling network settings")
-	changed, err := network.ReconcileNetwork(f, log)
+	changed, err := network.ReconcileNetwork(f, r.EnableDNSProxy, log)
 	if changed && err == nil {
 		r.recorder.Event(&f, "Normal", "Network settings", "reconcilation succeeded (frr.conf)")
 	} else if changed && err != nil {
